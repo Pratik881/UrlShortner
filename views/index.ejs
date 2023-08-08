@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>URL SHRINKER</h1>
+        <form action="/shortUrls" method="POST" class="my-4 form-inline">
+          <label for="fullUrl" class="sr-only">URL</label>
+          <input required placeholder="URL" type="url" name="fullUrl" id="fullUrl" class=" col form-control mr-2">
+          <button type="submit" class="btn btn-success" >Shrink</button>
+        </form>
+        <table class="table table-striped ">
+            <thead>
+               
+                <tr>
+                  <th>Full Url   </th>  
+                  <th>Short url   </th>
+                  <th>Clicks    </th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                <% shortUrls.forEach(shortUrl => { %>
+                    <tr>
+                    <td><a href="<%= shortUrl.full %>" target="_blank"><%= shortUrl.full %></a></td>
+                    <td><a href="<%= shortUrl.short%>" target="_blank"><%= shortUrl.short%></a></td>
+                    <td><%= shortUrl.clicks%></td>
+                </tr>  
+                <% }); %>
+                  
+            </tbody>
+        </table></div>
+      
+        <div class="text-center">
+            <button id="deleteAllBtn" type="Delete" class="btn btn-primary">Delete all</button>
+        </div>
+        <script>
+            document.getElementById('deleteAllBtn').addEventListener('click', function() {
+                // Send an AJAX request to the server to delete all data
+                fetch('/deleteAll', {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload()
+                    } else {
+                        console.error('Error deleting data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+</body>
+</html>
